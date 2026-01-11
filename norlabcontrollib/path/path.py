@@ -6,17 +6,17 @@ from norlabcontrollib.util.util_func import wrap2pi
 class Path:
     def __init__(self, poses):
         self.going_forward = True
-        self.poses = poses
-        self.planar_poses = np.zeros((poses.shape[0], 3))
-        self.planar_poses[:, 0] = poses[:, 0]
-        self.planar_poses[:, 1] = poses[:, 1]
+        self.poses = np.atleast_2d(poses)
+        self.planar_poses = np.zeros((self.poses.shape[0], 3))
+        self.planar_poses[:, 0] = self.poses[:, 0]
+        self.planar_poses[:, 1] = self.poses[:, 1]
         self.n_poses = self.poses.shape[0]
 
         self.curvatures = np.zeros(self.n_poses)
         self.look_ahead_curvatures = np.zeros(self.n_poses)
         self.distances_to_goal = np.zeros(self.n_poses)
         self.angular_distances_to_goal = np.zeros(self.n_poses)
-        self.angles = poses[:, 5]
+        self.angles = self.poses[:, 5]
         self.angles_spatial_window = 0.25
         self.world_to_path_tfs_array = np.ndarray((self.n_poses, 3, 3))
         self.path_to_world_tfs_array = np.ndarray((self.n_poses, 3, 3))
